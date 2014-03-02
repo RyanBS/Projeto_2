@@ -52,8 +52,8 @@ public:
 class Objeto {
 public:
 	int quantPontos, quantTriangulos;
-	Ponto P1, P2, P3;
-	vector<int> sequencia;
+	vector <Ponto> pontos;
+	vector <Ponto> triangulos;
 };
 
 class Iluminacao {

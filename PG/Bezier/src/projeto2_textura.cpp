@@ -202,32 +202,28 @@ void lerCamera (string endereco) {
 
 void lerObjeto (string endereco) {
 	ifstream arquivo (endereco);
+	Ponto p;
 
 	if (arquivo.is_open()) {
 		arquivo >> objeto.quantPontos;
 		arquivo >> objeto.quantTriangulos;
 
-		arquivo >> objeto.P1.x;
-		arquivo >> objeto.P1.y;
-		arquivo >> objeto.P1.z;
+		for (int i=0; i++<objeto.quantPontos;) {
+			arquivo >> p.x;
+			arquivo >> p.y;
+			arquivo >> p.z;
 
-		arquivo >> objeto.P2.x;
-		arquivo >> objeto.P2.y;
-		arquivo >> objeto.P2.z;
+			objeto.pontos.push_back(p);
+		}
 
-		arquivo >> objeto.P3.x;
-		arquivo >> objeto.P3.y;
-		arquivo >> objeto.P3.z;
+		for (int i=0; i++<objeto.quantTriangulos;) {
+			arquivo >> p.x;
+			arquivo >> p.y;
+			arquivo >> p.z;
 
-		double a, b, c;
+			objeto.triangulos.push_back(p);
+		}
 
-		arquivo >> a;
-		arquivo >> b;
-		arquivo >> c;
-
-		objeto.sequencia.push_back(a);
-		objeto.sequencia.push_back(b);
-		objeto.sequencia.push_back(c);
 	} else
 		printf ("Arquivo nao abriu!");
 }
