@@ -196,8 +196,12 @@ void lerCamera (string endereco) {
 		arquivo >> camera.distancia;
 		arquivo >> camera.hX;
 		arquivo >> camera.hY;
+
+		camera.vetorN = normalizarVetor(camera.vetorN);
+		camera.vetorV = normalizarVetor(camera.vetorV);
+		camera.vetorU = produtoVetorial(camera.vetorN, camera.vetorV);
 	} else
-		printf("Documento nao abriu.\n");
+		printf("Arquivo camera nao abriu.\n");
 }
 
 void lerObjeto (string endereco) {
@@ -208,24 +212,29 @@ void lerObjeto (string endereco) {
 		arquivo >> objeto.quantPontos;
 		arquivo >> objeto.quantTriangulos;
 
-		for (int i=0; i++<objeto.quantPontos;) {
+		for (int i=0; i<objeto.quantPontos; i++) {
 			arquivo >> p.x;
 			arquivo >> p.y;
 			arquivo >> p.z;
+			
+			/* Rever construção dos métodos abaixo.
+			Ambos estão dando erro!
 
-			objeto.pontos.push_back(p);
+			objeto.pontosTela.at(i) = camera.coordDeMundoParaVista(p);
+			p = camera.coordProjetada(objeto.pontosTela.at(i));
+			objeto.pontosTela.push_back(p); */
 		}
 
-		for (int i=0; i++<objeto.quantTriangulos;) {
+		for (int i=0; i<objeto.quantTriangulos; i++) {
 			arquivo >> p.x;
 			arquivo >> p.y;
 			arquivo >> p.z;
 
-			objeto.triangulos.push_back(p);
+			//objeto.triangulos.push_back(p);
 		}
 
 	} else
-		printf ("Arquivo nao abriu!");
+		printf ("Arquivo objeto nao abriu!");
 }
 
 void lerIluminacao (string endereco) {
@@ -256,7 +265,7 @@ void lerIluminacao (string endereco) {
 
 		arquivo >> iluminacao.rugosidade;
 	} else
-		printf("O arquivo nao abriu!");
+		printf("Arquivo iluminacao nao abriu!");
 }
 
 void hadleSpecialKeyboard(int key, int x, int y)
@@ -280,13 +289,14 @@ void loop(int id)
 
 int main(int argc, char **argv)
 {
-	pathObjeto = "C:/Users/ivonei/Angelo/UFPE/PG 2013.2/Projeto 2 - Textura/objeto.byu";
-	pathCamera = "C:/Users/ivonei/Angelo/UFPE/PG 2013.2/Projeto 2 - Textura/camera.cfg";
-	pathIluminacao = "C:/Users/ivonei/Angelo/UFPE/PG 2013.2/Projeto 2 - Textura/iluminacao.txt";
-	pathTextura = "C:/Users/ivonei/Angelo/UFPE/PG 2013.2/Projeto 2 - Textura/textura.jpg";
+	pathObjeto = "C:/Users/ivonei/Angelo/UFPE/PG 2013.2/Projeto_2/objeto.byu";
+	pathCamera = "C:/Users/ivonei/Angelo/UFPE/PG 2013.2/Projeto_2/camera.cfg";
+	pathIluminacao = "C:/Users/ivonei/Angelo/UFPE/PG 2013.2/Projeto_2/iluminacao.txt";
+	pathTextura = "C:/Users/ivonei/Angelo/UFPE/PG 2013.2/Projeto_2/textura.jpg";
 
 	lerCamera(pathCamera);
 	lerObjeto(pathObjeto);
+	lerIluminacao(pathIluminacao);
 	
 	printf("%f %f %f %f %f %f %f %f %f %f %f %f\n\n", camera.pontoCamera.x, camera.pontoCamera.y,
 		camera.pontoCamera.z, camera.vetorN.x, camera.vetorN.y, camera.vetorN.z, camera.vetorV.x,

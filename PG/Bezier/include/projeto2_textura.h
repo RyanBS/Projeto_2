@@ -44,16 +44,45 @@ public:
 class Camera {
 public: 
 	Ponto pontoCamera;
-	Vetor vetorN, vetorV;
+	Vetor vetorN, vetorV, vetorU;
 	double distancia, hX, hY;
+
+	// matriz dos vetores U, V e N por P-C
+	Ponto coordDeMundoParaVista (Ponto pontoObjeto) {
+		Ponto result;
+		double alfa = pontoObjeto.x - pontoCamera.x,
+			beta = pontoObjeto.y - pontoCamera.y,
+			gama = pontoObjeto.z - pontoCamera.z;
+
+		// I*[P-C]
+		result.x = vetorU.x*alfa + vetorV.x*beta + vetorN.x*gama;
+		result.y = vetorU.y*alfa + vetorV.y*beta + vetorN.y*gama;
+		result.z = vetorU.z*alfa + vetorV.z*beta + vetorN.z*gama;
+
+		return result;
+	}
+
+	Ponto coordProjetada (Ponto pontoVista) {
+		Ponto result;
+
+		result.x = (distancia/hX)*(pontoVista.x/pontoVista.z);
+		result.y = (distancia/hY)*(pontoVista.y/pontoVista.z);
+
+		return result;
+	}
 
 };
 
 class Objeto {
 public:
 	int quantPontos, quantTriangulos;
-	vector <Ponto> pontos;
+	vector <Ponto> pontosMundo;
 	vector <Ponto> triangulos;
+	vector <Ponto> pontosTela;
+
+	// ordenar triangulos, fazer a varredura, fazer o Z-buffer, ...
+
+	/* ver o scan Conversion */
 };
 
 class Iluminacao {
